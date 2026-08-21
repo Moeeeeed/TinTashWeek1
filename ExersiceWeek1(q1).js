@@ -2,6 +2,7 @@
 
 function SumArguments()
 {
+    // Handle the empty and single-argument cases before adding values.
     if (arguments.length==0 )
     {
         console.log("No elements in the array\n");
@@ -17,7 +18,8 @@ function SumArguments()
     else
     {
     var sum=0;
-    
+
+    // Add each supplied argument to the running total.
     for (let i =0;i!=arguments.length;i++)
     {
       sum=sum+arguments[i];  

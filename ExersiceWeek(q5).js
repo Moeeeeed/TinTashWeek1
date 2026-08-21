@@ -3,6 +3,7 @@ function fetchUrlsCallback(urls, callback) {
   let index = 0;
 
   function next() {
+    // Move through the list one URL at a time for the callback version.
     if (index === urls.length) {
       callback(results);
       return;
@@ -28,6 +29,7 @@ function fetchUrlsCallback(urls, callback) {
 function fetchUrlsPromiseSerial(urls) {
   const results = [];
 
+  // Chain each request so the promise version also runs in order.
   return urls
     .reduce((chain, url) => {
       return chain.then(() => {
@@ -41,6 +43,7 @@ function fetchUrlsPromiseSerial(urls) {
 }
 
 function fetchUrlsParallel(urls) {
+  // Start all requests together to compare parallel performance.
   const promises = urls.map(url =>
     fetch(url)
       .then(res => res.text())
@@ -54,6 +57,7 @@ function fetchUrlsParallel(urls) {
 async function fetchUrlsAsyncAwait(urls) {
   const results = [];
 
+  // Await each request inside the loop to keep this version serial.
   for (const url of urls) {
     try {
       const res = await fetch(url);
@@ -68,6 +72,7 @@ async function fetchUrlsAsyncAwait(urls) {
 }
 
 async function fetchUrlsAsyncAwaitParallel(urls) {
+  // Map every URL to a promise, then wait for them all together.
   const promises = urls.map(async url => {
     try {
       const res = await fetch(url);

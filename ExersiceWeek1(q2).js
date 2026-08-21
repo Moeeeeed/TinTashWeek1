@@ -1,7 +1,8 @@
 Array.prototype.populate = async function() {
     var ArrayOfResults = [];
     var ValidUrl = [];
-    
+
+    // Normalize each value before starting any network requests.
     for(let i = 0; i < this.length; i++) {
         let URLString = this[i];
 
@@ -9,12 +10,12 @@ Array.prototype.populate = async function() {
             throw new Error(`Invalid url at index ${i}. Not a string type.`);
         }
         
-        // If it doesn't have http, add it (using https is safer for modern web)
+        // Add a protocol when the caller only provides a domain name.
         if(!URLString.startsWith('http')) {
             URLString = 'https://' + URLString; 
         }
         
-        // The universal check: if there is no dot, assume it needs '.com'
+        // Treat a value without a dot as a simple .com domain.
         if (!URLString.includes('.')) {
             URLString = URLString + '.com'; 
         }
@@ -33,6 +34,7 @@ Array.prototype.populate = async function() {
         });
     });
 
+    // Wait until every website response has been collected.
     ArrayOfResults = await Promise.all(ArrayOfResults);
 
     for (let i = 0; i < this.length; i++) {

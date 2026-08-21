@@ -2,11 +2,13 @@ function sum(a)
  {
   return function(b) 
   {
+    // An empty final call tells us to return the accumulated value.
     if (b === undefined)
      {
       return a;
     }
-    return sum(a + b);//reecursive case
+    // Keep returning functions so more values can be chained.
+    return sum(a + b);
   };
 }
  

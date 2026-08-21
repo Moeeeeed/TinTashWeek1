@@ -18,6 +18,7 @@ function createDashboardObservable(temperature, pressure, humidity) {
 
     function buildDisplayObject() {
       const now = Date.now();
+      // A sensor that has been quiet for a second is shown as unavailable.
       return {
         temperature: now - lastUpdated.temperature > 1000 ? "N/A" : latest.temperature,
         pressure: now - lastUpdated.pressure > 1000 ? "N/A" : latest.pressure,
@@ -31,6 +32,7 @@ function createDashboardObservable(temperature, pressure, humidity) {
       const now = Date.now();
       const elapsed = now - lastEmitTime;
 
+      // Limit dashboard updates to one emission every 100 milliseconds.
       if (elapsed >= 100) {
         lastEmitTime = now;
         subscriber.next(buildDisplayObject());
